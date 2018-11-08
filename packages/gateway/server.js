@@ -10,4 +10,4 @@ server
     .use(bodyParser.json())
     .use('/graphql', graphqlExpress({ schema }))
     .use('/gq', graphiqlExpress({ endpointURL : '/graphql'}))
-    .listen(port, () => console.log(`Gateway listening on port ${port}`));
+    .listen(port, () => console.log(`Gateway listening on port: ${port}`));

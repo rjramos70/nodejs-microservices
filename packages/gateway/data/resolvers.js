@@ -1,31 +1,21 @@
-// Mocking an Array of Mails
-const mockMails = [
-    {
-        subject: 'My first Email',
-        receiver: 'test@test.com',
-        content: 'Hello world'
-    },
-    {
-        subject: 'My second Email',
-        receiver: 'test@test.com',
-        content: 'Hello world'
-    },
-    {
-        subject: 'My third Email',
-        receiver: 'test@test.com',
-        content: 'Hello world'
-    }
-];
+const axios = require('axios');
+const { ServerDatabase: { port } } = require('../config/index'); 
+
+const hostname = 'http://localhost';
+const databaseURL = `${hostname}:${port}`;
+
+const get = async path => 
+    (await axios.get(`${databaseURL}/${path}`)).data.payload;
+
+const post = async (path, body) => 
+    (await axios.post(`${databaseURL}/${path}`, { ... body })).data.payload; 
 
 module.exports = {
     Query: {
-        mails: () => mockMails,
-        mail: (_, args) => mockMails[0]
+        mails: () => get('mails'),
+        mail: (_, { id }) => get(`mails/${id}`)
     },
     Mutation: {
-        mail: (_, args) => {
-            mockMails[0] = args;
-            return args;
-        }
+        mail: (_, args) => post('mails', args)
     }
 };
